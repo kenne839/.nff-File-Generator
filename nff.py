@@ -1,21 +1,22 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
+from __future__ import with_statement
 import wx
 import os
 import binascii
 import struct
 import sys
-import numpy as np
+##import numpy as np
 
-from __future__ import with_statement
+
 
 class Form(wx.Panel):
     
     rev = '\0\0\0'
-    partNum = np.uint32(0)
+    partNum = 0x00000000
     filePath = '0'
     nfName = 0
     checkSum = 0
@@ -92,9 +93,9 @@ class Form(wx.Panel):
         
     def onGenerate(self,event):
         if(len(self.rev) > 3):
-            self.__log('Revision text can only be 3 characters!')
-        elif (int(self.partNum) > np.uint32(0xFFFFFFFF) ):
-            self.__log('Part number can only be 4 bytes long!')    
+            self.__log('Revision text can only be 3 characters!\n')
+        elif (int(self.partNum) > 0xFFFFFFFF ):
+            self.__log('Part number can only be 4 bytes long!\n')    
         elif (self.filePath == '0'):
             self.__log('Pick a file!\n')
         else:
@@ -179,9 +180,9 @@ def Prepend_BIN(filename, partNum, rev, nfName):
     firmSize = '\0\0\0\0' ## ^^
     newFile = nfName + ".nff" ##file output name
 
-
     partNum = int(partNum) #string to int
     partNum = struct.pack('<L', partNum) #convert to little endian hex
+    
 
     NFF = int(NFF, 16) #convert CRC32 to int
     NFF = struct.pack('<L', NFF) #convert back to little end. hex
